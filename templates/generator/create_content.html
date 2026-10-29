@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block title %}Create Content — ContentFlow AI{% endblock %}
+{% block page_title %}Create Content{% endblock %}
+
+{% block extra_css %}
+<style>
+  .wizard-steps {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+    gap: 1.5rem;
+    overflow-x: auto;
+  }
+  .wizard-step-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 0.25rem;
+    border-bottom: 2px solid transparent;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .wizard-step-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+  }
+  .step-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--border-color-light);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+  }
+  .wizard-step-tab.active .step-circle {
+    background: var(--primary);
+    color: #ffffff;
+  }
+  .platform-card-checkbox {
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    background: var(--bg-surface);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.2s ease;
+  }
+  .platform-card-checkbox:hover {
+    border-color: var(--primary);
+  }
+  .platform-card-checkbox input[type="checkbox"]:checked ~ .platform-info-box {
+    color: var(--primary);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+  <div>
+    <h1 class="dashboard-title">Repurpose Content Pipeline</h1>
+    <p class="dashboard-subtitle">Select source documents, target platforms, and brand guidelines to produce verifiable social posts.</p>
+  </div>
+  <div class="demo-badge-sidebar" style="border-radius: var(--radius-md);">
+    <i class="bi bi-cpu-fill text-primary"></i>
+    <span>Demo Mode — Simulated AI Generation</span>
+  </div>
+</div>
+
+<!-- Wizard Navigation Steps -->
+<div class="wizard-steps">
+  <div class="wizard-step-tab active" id="stepTab-1">
+    <span class="step-circle">1</span>
+    <span>Source Document</span>
+  </div>
+  <div class="wizard-step-tab" id="stepTab-2">
+    <span class="step-circle">2</span>
+    <span>Target Platforms</span>
+  </div>
+  <div class="wizard-step-tab" id="stepTab-3">
+    <span class="step-circle">3</span>
+    <span>Tone & Voice Settings</span>
+  </div>
+  <div class="wizard-step-tab" id="stepTab-4">
+    <span class="step-circle">4</span>
+    <span>Generated Posts</span>
+  </div>
+</div>
+
+<!-- Step 1: Select Source -->
+<div id="stepPane-1">
+  <div class="card" style="margin-bottom: 1.5rem;">
+    <div class="card-header">
+      <h3 class="card-title">Step 1: Choose Source Document</h3>
+      <a href="{% url 'sources' %}?action=add" class="btn btn-secondary btn-sm">
+        <i class="bi bi-plus-lg"></i> Add New Source First
+      </a>
+    </div>
+    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.25rem;">
+      Select an approved source from your library to generate facts, hooks, and platform-specific summaries.
+    </p>
+
+    <div id="sourceSelectionGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+      <!-- Populated by generator.js -->
+    </div>
+
+    <!-- Active Selection Preview -->
+    <div id="selectedSourcePreview" style="display: none; background: var(--bg-body); padding: 1rem 1.25rem; border-radius: var(--radius-md); border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+      <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--primary);">Currently Selected Source:</div>
+      <div id="previewSourceTitle" style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-top: 0.25rem;"></div>
+      <div id="previewSourceMeta" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem;"></div>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end;">
+      <button type="button" id="step1NextBtn" class="btn btn-primary" disabled>
+        Continue to Platforms <i class="bi bi-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Step 2: Select Platforms -->
+<div id="stepPane-2" style="display: none;">
+  <div class="card" style="margin-bottom: 1.5rem;">
+    <div class="card-header">
+      <h3 class="card-title">Step 2: Choose Target Platforms</h3>
+      <span class="badge badge-platform">Multi-selection supported</span>
+    </div>
+    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+      Select the channels where you intend to distribute this content. Each channel receives customized length, formatting, and hooks.
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+      <label class="platform-card-checkbox">
+        <input type="checkbox" name="platformSelect" value="LinkedIn" checked style="width: 18px; height: 18px;">
+        <div class="platform-info-box">
+          <div style="font-weight: 700; color: var(--text-primary); font-size: 1rem;"><i class="bi bi-linkedin" style="color: #0a66c2;"></i> LinkedIn</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Thought leadership, carousel, and text post</div>
+        </div>
+      </label>
+
+      <label class="platform-card-checkbox">
+        <input type="checkbox" name="platformSelect" value="Instagram" checked style="width: 18px; height: 18px;">
+        <div class="platform-info-box">
+          <div style="font-weight: 700; color: var(--text-primary); font-size: 1rem;"><i class="bi bi-instagram" style="color: #e1306c;"></i> Instagram</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Carousel captions and visual storytelling</div>
+        </div>
+      </label>
+
+      <label class="platform-card-checkbox">
+        <input type="checkbox" name="platformSelect" value="Instagram Reels" checked style="width: 18px; height: 18px;">
+        <div class="platform-info-box">
+          <div style="font-weight: 700; color: var(--text-primary); font-size: 1rem;"><i class="bi bi-play-circle-fill" style="color: #9333ea;"></i> Instagram Reels</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Timed audio hooks, voiceover script, and visuals</div>
+        </div>
+      </label>
+
+      <label class="platform-card-checkbox">
+        <input type="checkbox" name="platformSelect" value="YouTube Shorts" checked style="width: 18px; height: 18px;">
+        <div class="platform-info-box">
+          <div style="font-weight: 700; color: var(--text-primary); font-size: 1rem;"><i class="bi bi-youtube" style="color: #ff0000;"></i> YouTube Shorts</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Rapid-fire breakdown scripts with timestamps</div>
+        </div>
+      </label>
+
+      <label class="platform-card-checkbox">
+        <input type="checkbox" name="platformSelect" value="Facebook" style="width: 18px; height: 18px;">
+        <div class="platform-info-box">
+          <div style="font-weight: 700; color: var(--text-primary); font-size: 1rem;"><i class="bi bi-facebook" style="color: #1877f2;"></i> Facebook</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Community discussion posts and links</div>
+        </div>
+      </label>
+    </div>
+
+    <div style="display: flex; justify-content: space-between;">
+      <button type="button" id="step2BackBtn" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Back to Sources
+      </button>
+      <button type="button" id="step2NextBtn" class="btn btn-primary">
+        Continue to Voice Settings <i class="bi bi-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Step 3: Content Settings -->
+<div id="stepPane-3" style="display: none;">
+  <div class="card" style="margin-bottom: 1.5rem;">
+    <div class="card-header">
+      <h3 class="card-title">Step 3: Content & Voice Tuning</h3>
+      <div style="font-size: 0.85rem; color: var(--text-muted);">
+        Brand: <strong id="brandNameDisplay" style="color: var(--text-primary);">Acme Cloud Labs</strong>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+      <div class="form-group">
+        <label class="form-label" for="settingAudience">Target Audience Profile</label>
+        <input type="text" id="settingAudience" class="form-control" placeholder="e.g. Engineering Directors, Founders, Marketers">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="settingTone">Preferred Tone of Voice</label>
+        <select id="settingTone" class="form-select">
+          <option value="authoritative">Authoritative & Data-Driven</option>
+          <option value="conversational">Conversational & Engaging</option>
+          <option value="educational">Educational & Step-by-Step</option>
+          <option value="bold">Bold & Contrarian</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+      <div class="form-group">
+        <label class="form-label" for="settingLength">Content Length Preference</label>
+        <select id="settingLength" class="form-select">
+          <option value="standard">Standard (Optimized for Platform Algorithm)</option>
+          <option value="concise">Concise & Punchy (Short read)</option>
+          <option value="detailed">Detailed Deep Dive (Carousel / Breakdown)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="settingCta">Primary Call to Action (CTA)</label>
+        <input type="text" id="settingCta" class="form-control" placeholder="e.g. Read the complete guide linked in comments.">
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; margin-top: 1.5rem;">
+      <button type="button" id="step3BackBtn" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Back to Platforms
+      </button>
+      <button type="button" id="generateContentBtn" class="btn btn-primary btn-lg">
+        <i class="bi bi-stars"></i> Generate Repurposed Posts
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Step 4: Generation Results & Animation -->
+<div id="stepPane-4" style="display: none;">
+  <!-- Loading state -->
+  <div id="generationLoadingState" class="card" style="text-align: center; padding: 4rem 2rem;">
+    <div style="display: inline-block; width: 48px; height: 48px; border: 4px solid var(--border-color); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 1.5rem;"></div>
+    <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+      Synthesizing Platform Formats...
+    </h3>
+    <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 460px; margin: 0 auto;">
+      Extracting empirical claims, formatting carousels and scripts, and applying your brand guidelines.
+    </p>
+  </div>
+
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+
+  <!-- Results List -->
+  <div id="generationResultsState" style="display: none;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <div>
+        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary);">Generated Social Content</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Posts saved in local workspace. Review and approve before publishing.</p>
+      </div>
+      <div style="display: flex; gap: 0.75rem;">
+        <button type="button" class="btn btn-secondary btn-sm" onclick="goToStep(1)">
+          <i class="bi bi-arrow-repeat"></i> Start New Repurpose
+        </button>
+        <a href="{% url 'history' %}" class="btn btn-primary btn-sm">
+          <i class="bi bi-clock-history"></i> Open Content History
+        </a>
+      </div>
+    </div>
+
+    <div id="generatedResultsList">
+      <!-- Populated by generator.js -->
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/generator.js"></script>
+{% endblock %}
+

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}ContentFlow AI — Repurpose Content With Factual Integrity{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="stylesheet" href="/static/css/components.css">
+  <link rel="stylesheet" href="/static/css/responsive.css">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  {% block layout %}
+  <div class="app-container">
+    <!-- Shared Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="{% url 'dashboard' %}" class="sidebar-brand">
+          <img src="/static/images/logo.svg" alt="ContentFlow AI Logo">
+          <span>ContentFlow AI</span>
+        </a>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-label">Workspace</li>
+        <li class="menu-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+          <a href="{% url 'dashboard' %}"><i class="bi bi-grid-1x2"></i> <span>Dashboard</span></a>
+        </li>
+        <li class="menu-item {% if request.resolver_match.url_name == 'sources' %}active{% endif %}">
+          <a href="{% url 'sources' %}"><i class="bi bi-folder2-open"></i> <span>Source Library</span></a>
+        </li>
+        <li class="menu-item {% if request.resolver_match.url_name == 'create_content' %}active{% endif %}">
+          <a href="{% url 'create_content' %}"><i class="bi bi-stars"></i> <span>Create Content</span></a>
+        </li>
+        <li class="menu-item {% if request.resolver_match.url_name == 'history' %}active{% endif %}">
+          <a href="{% url 'history' %}"><i class="bi bi-clock-history"></i> <span>Content History</span></a>
+        </li>
+
+        <li class="menu-label">Intelligence & Voice</li>
+        <li class="menu-item {% if request.resolver_match.url_name == 'brand_settings' %}active{% endif %}">
+          <a href="{% url 'brand_settings' %}"><i class="bi bi-palette"></i> <span>Brand Settings</span></a>
+        </li>
+        <li class="menu-item {% if request.resolver_match.url_name == 'exports' %}active{% endif %}">
+          <a href="{% url 'exports' %}"><i class="bi bi-file-earmark-arrow-down"></i> <span>Export Center</span></a>
+        </li>
+
+        <li class="menu-label">System</li>
+        <li class="menu-item {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">
+          <a href="{% url 'settings' %}"><i class="bi bi-gear"></i> <span>Settings</span></a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="demo-badge-sidebar">
+          <i class="bi bi-shield-check text-success"></i>
+          <span>Simulated Local Demo (No API Key Required)</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="main-wrapper">
+      <header class="top-navbar">
+        <div class="nav-left">
+          <button type="button" class="mobile-toggle" id="mobileSidebarToggle">
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="breadcrumb-area">
+            <span>ContentFlow</span>
+            <i class="bi bi-chevron-right" style="font-size: 0.75rem;"></i>
+            <span class="active">{% block page_title %}Dashboard{% endblock %}</span>
+          </div>
+        </div>
+
+        <div class="nav-right">
+          <!-- Theme Toggle -->
+          <button type="button" class="btn-icon" id="themeToggleBtn" onclick="App.toggleTheme()" title="Toggle Light/Dark Theme">
+            <i class="bi bi-moon"></i>
+          </button>
+
+          <!-- User Profile & Logout -->
+          <div class="user-profile-menu" onclick="window.location.href='{% url 'settings' %}'" title="Manage Settings">
+            <div class="avatar-circle">CF</div>
+            <div class="user-info">
+              <span class="user-name user-session-name">Demo User</span>
+              <span class="user-role user-session-role">Content Strategist</span>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-secondary btn-sm" onclick="App.logout()" title="End Simulated Session">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="content-body">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+  {% endblock layout %}
+
+  <!-- Core Scripts -->
+  <script src="/static/js/demo-data.js"></script>
+  <script src="/static/js/storage.js"></script>
+  <script src="/static/js/app.js"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
+

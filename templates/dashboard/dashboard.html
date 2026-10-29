@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard — ContentFlow AI{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/dashboard.css">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+  <div>
+    <h1 class="dashboard-title">Social Campaign Overview</h1>
+    <p class="dashboard-subtitle">Monitor repurposed content pipeline, verification statuses, and audience distribution.</p>
+  </div>
+  <div class="quick-actions-bar">
+    <a href="{% url 'sources' %}?action=add" class="btn btn-secondary">
+      <i class="bi bi-file-earmark-plus"></i> Add Source
+    </a>
+    <a href="{% url 'create_content' %}" class="btn btn-primary">
+      <i class="bi bi-stars"></i> Create Content
+    </a>
+    <a href="{% url 'history' %}?status=Needs Review" class="btn btn-secondary">
+      <i class="bi bi-patch-check"></i> Review Posts
+    </a>
+    <a href="{% url 'exports' %}" class="btn btn-secondary">
+      <i class="bi bi-download"></i> Export
+    </a>
+  </div>
+</div>
+
+<!-- Stats Row -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon primary"><i class="bi bi-folder2-open"></i></div>
+    <div class="stat-details">
+      <span class="stat-label">Total Sources</span>
+      <span class="stat-value" id="statTotalSources">0</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon secondary"><i class="bi bi-file-earmark-richtext"></i></div>
+    <div class="stat-details">
+      <span class="stat-label">Generated Posts</span>
+      <span class="stat-value" id="statTotalPosts">0</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon warning"><i class="bi bi-shield-exclamation"></i></div>
+    <div class="stat-details">
+      <span class="stat-label">Awaiting Review</span>
+      <span class="stat-value" id="statReviewPosts">0</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon success"><i class="bi bi-check2-circle"></i></div>
+    <div class="stat-details">
+      <span class="stat-label">Approved & Ready</span>
+      <span class="stat-value" id="statApprovedPosts">0</span>
+    </div>
+  </div>
+</div>
+
+<!-- Charts Row -->
+<div class="charts-row">
+  <div class="card chart-card">
+    <div class="card-header">
+      <h3 class="card-title"><i class="bi bi-pie-chart" style="color: var(--primary); margin-right: 0.5rem;"></i>Platform Distribution</h3>
+      <span class="badge badge-platform">Omnichannel</span>
+    </div>
+    <div style="height: 240px; position: relative;">
+      <canvas id="platformChart"></canvas>
+    </div>
+  </div>
+
+  <div class="card chart-card">
+    <div class="card-header">
+      <h3 class="card-title"><i class="bi bi-bar-chart-steps" style="color: var(--secondary); margin-right: 0.5rem;"></i>Content Status Pipeline</h3>
+      <span class="badge badge-draft">Editorial Stages</span>
+    </div>
+    <div style="height: 240px; position: relative;">
+      <canvas id="statusChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Two Columns: Recent Generated Posts & (Recent Sources + Activity) -->
+<div style="display: grid; grid-template-columns: 2fr 1.2fr; gap: 1.5rem; align-items: start;">
+  <!-- Left: Recent Generated Content -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title"><i class="bi bi-clock-history" style="color: var(--primary); margin-right: 0.5rem;"></i>Recent Generated Posts</h3>
+      <a href="{% url 'history' %}" class="btn btn-outline-primary btn-sm">View All History</a>
+    </div>
+    <div class="table-responsive">
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Post Title / Source</th>
+            <th>Platform</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="recentPostsTableBody">
+          <!-- Populated by dashboard.js -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Right: Recent Sources & Activity Feed -->
+  <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+    <!-- Recent Sources -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><i class="bi bi-folder-check" style="color: var(--primary); margin-right: 0.5rem;"></i>Active Source Docs</h3>
+        <a href="{% url 'sources' %}" class="btn btn-secondary btn-sm">Library</a>
+      </div>
+      <div id="recentSourcesList">
+        <!-- Populated by dashboard.js -->
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><i class="bi bi-activity" style="color: var(--warning); margin-right: 0.5rem;"></i>Audit & Activity</h3>
+      </div>
+      <ul class="activity-list" id="activityFeed">
+        <!-- Populated by dashboard.js -->
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}
+

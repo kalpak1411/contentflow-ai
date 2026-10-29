@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Export Center — ContentFlow AI{% endblock %}
+{% block page_title %}Export Center{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+  <div>
+    <h1 class="dashboard-title">Export & Multi-Channel Distribution</h1>
+    <p class="dashboard-subtitle">Generate CSV spreadsheets and JSON payloads for social scheduling tools (Buffer, Hootsuite, Sprout).</p>
+  </div>
+</div>
+
+<!-- Stats Strip -->
+<div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 1.5rem;">
+  <div class="stat-card">
+    <div class="stat-icon success"><i class="bi bi-patch-check"></i></div>
+    <div class="stat-details">
+      <span class="stat-label">Approved & Ready to Export</span>
+      <span class="stat-value" id="exportStatApproved">0</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon warning"><i class="bi bi-hourglass-split"></i></div>
+    <div class="stat-details">
+      <span class="stat-label">Drafts & In-Review</span>
+      <span class="stat-value" id="exportStatDrafts">0</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon primary"><i class="bi bi-stack"></i></div>
+    <div class="stat-details">
+      <span class="stat-label">Total Campaign Posts</span>
+      <span class="stat-value" id="exportStatTotal">0</span>
+    </div>
+  </div>
+</div>
+
+<!-- Export Controls Card -->
+<div class="card" style="max-width: 760px; margin-bottom: 2rem;">
+  <div class="card-header">
+    <h3 class="card-title"><i class="bi bi-download" style="color: var(--primary); margin-right: 0.5rem;"></i>Configure Download</h3>
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Export Scope</label>
+    <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+      <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+        <input type="radio" name="exportScope" value="approved" checked style="width: 18px; height: 18px;">
+        <div>
+          <strong>Approved Content Only (Recommended)</strong>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Exports only editorial assets that passed verification and review.</div>
+        </div>
+      </label>
+
+      <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+        <input type="radio" name="exportScope" value="drafts" style="width: 18px; height: 18px;">
+        <div>
+          <strong>Drafts & Unreviewed Content</strong>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Useful for offline legal or compliance audit reviews.</div>
+        </div>
+      </label>
+
+      <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+        <input type="radio" name="exportScope" value="all" style="width: 18px; height: 18px;">
+        <div>
+          <strong>All Records (Full Workspace Archive)</strong>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Includes approved posts, review queues, drafts, and rejected copy.</div>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <div style="background: var(--bg-body); padding: 1rem 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+    <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);" id="exportCountPreview">
+      Calculating records...
+    </div>
+    <span class="badge badge-supported">CSV Formula Injection Protected</span>
+  </div>
+
+  <div style="display: flex; gap: 1rem;">
+    <button type="button" id="downloadCsvBtn" class="btn btn-primary" style="flex: 1;">
+      <i class="bi bi-file-earmark-spreadsheet"></i> Download CSV File
+    </button>
+    <button type="button" id="downloadJsonBtn" class="btn btn-secondary" style="flex: 1;">
+      <i class="bi bi-file-earmark-code"></i> Download JSON File
+    </button>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/exports.js"></script>
+{% endblock %}
+

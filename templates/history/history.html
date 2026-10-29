@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Content History — ContentFlow AI{% endblock %}
+{% block page_title %}Content History{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+  <div>
+    <h1 class="dashboard-title">Generated Content History</h1>
+    <p class="dashboard-subtitle">Search, filter, and track approval states across all past multi-channel repurposed assets.</p>
+  </div>
+  <div>
+    <a href="{% url 'create_content' %}" class="btn btn-primary">
+      <i class="bi bi-stars"></i> Create New Content
+    </a>
+  </div>
+</div>
+
+<!-- Controls Card -->
+<div class="card" style="padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
+  <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+    <div style="display: flex; gap: 0.75rem; flex: 1; min-width: 280px;">
+      <div style="position: relative; flex: 1;">
+        <i class="bi bi-search" style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+        <input type="text" id="historySearchInput" class="form-control" placeholder="Search by title, body excerpt, or source..." style="padding-left: 2.25rem;">
+      </div>
+      <select id="historyPlatformFilter" class="form-select" style="max-width: 170px;">
+        <option value="ALL">All Platforms</option>
+        <option value="LinkedIn">LinkedIn</option>
+        <option value="Instagram">Instagram</option>
+        <option value="Instagram Reels">Instagram Reels</option>
+        <option value="YouTube Shorts">YouTube Shorts</option>
+        <option value="Facebook">Facebook</option>
+      </select>
+      <select id="historyStatusFilter" class="form-select" style="max-width: 160px;">
+        <option value="ALL">All Statuses</option>
+        <option value="Approved">Approved</option>
+        <option value="Needs Review">Needs Review</option>
+        <option value="Draft">Draft</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+    </div>
+
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+      <select id="historySortSelect" class="form-select" style="max-width: 150px;">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+      </select>
+      <span class="badge badge-draft" id="historyCountBadge">0 posts</span>
+    </div>
+  </div>
+</div>
+
+<!-- Table Card -->
+<div class="card">
+  <div class="table-responsive">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Headline / Source</th>
+          <th>Platform</th>
+          <th>Status</th>
+          <th>Content Snippet</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="historyTableBody">
+        <!-- Rendered by history.js -->
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/history.js"></script>
+{% endblock %}
+

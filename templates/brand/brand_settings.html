@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Brand Settings — ContentFlow AI{% endblock %}
+{% block page_title %}Brand Settings{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+  <div>
+    <h1 class="dashboard-title">Brand Voice & Guidelines</h1>
+    <p class="dashboard-subtitle">Configure vocabulary, prohibited terms, tone of voice, and default calls to action across generated campaigns.</p>
+  </div>
+  <div style="display: flex; gap: 0.75rem;">
+    <button type="button" id="resetBrandBtn" class="btn btn-secondary">
+      <i class="bi bi-arrow-counterclockwise"></i> Reset Demo Brand
+    </button>
+  </div>
+</div>
+
+<div class="card">
+  <form id="brandSettingsForm">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+      <div class="form-group">
+        <label class="form-label" for="brandName">Brand / Company Name *</label>
+        <input type="text" id="brandName" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="industry">Industry Sector</label>
+        <input type="text" id="industry" class="form-control">
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+      <div class="form-group">
+        <label class="form-label" for="website">Company Website</label>
+        <input type="url" id="website" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="targetAudience">Target Audience Profile</label>
+        <input type="text" id="targetAudience" class="form-control">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="description">Brand Elevator Pitch / Mission</label>
+      <textarea id="description" class="form-control" rows="2"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="preferredTone">Preferred Brand Tone</label>
+      <input type="text" id="preferredTone" class="form-control" placeholder="e.g. Authoritative yet accessible, data-driven, and forward-looking">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="writingGuidelines">Writing Guidelines & Editorial Principles</label>
+      <textarea id="writingGuidelines" class="form-control" rows="3" placeholder="Core editorial rules applied to all generated outputs"></textarea>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+      <div class="form-group">
+        <label class="form-label" for="preferredVocabulary">Preferred Vocabulary / Key Phrases</label>
+        <textarea id="preferredVocabulary" class="form-control" rows="2" placeholder="Comma-separated preferred terms"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="prohibitedTerms">Prohibited Terms / Buzzwords</label>
+        <textarea id="prohibitedTerms" class="form-control" rows="2" placeholder="Terms to strictly avoid (e.g. synergy, miracle tool)"></textarea>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+      <div class="form-group">
+        <label class="form-label" for="emojiPreferences">Emoji Usage Preference</label>
+        <input type="text" id="emojiPreferences" class="form-control" placeholder="e.g. Minimal & professional (🚀, 🔒, ⚡)">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="hashtagPreferences">Default Campaign Hashtags</label>
+        <input type="text" id="hashtagPreferences" class="form-control" placeholder="#EnterpriseTech #CloudSecurity">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="defaultCta">Default Call to Action (CTA)</label>
+      <input type="text" id="defaultCta" class="form-control" placeholder="e.g. Read the complete benchmark findings on our website.">
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+      <button type="submit" class="btn btn-primary btn-lg">
+        <i class="bi bi-floppy"></i> Save Brand Guidelines
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/brand-settings.js"></script>
+{% endblock %}
+

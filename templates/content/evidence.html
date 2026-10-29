@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Evidence & Fact Check — ContentFlow AI{% endblock %}
+{% block page_title %}Evidence & Fact Check{% endblock %}
+
+{% block content %}
+<input type="hidden" id="evidenceContentId" value="{{ content_id }}">
+
+<div class="dashboard-header">
+  <div>
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem;">
+      <span class="badge badge-platform" id="evidencePostPlatform">Platform</span>
+      <span style="font-size: 0.85rem; color: var(--text-muted);">Source-to-Claim Traceability Engine</span>
+    </div>
+    <h1 class="dashboard-title" id="evidencePostTitle">Fact Check Console</h1>
+    <p class="dashboard-subtitle">
+      Source Document: <strong id="evidenceSourceTitle">Source Title</strong>
+    </p>
+  </div>
+
+  <div>
+    <a href="#" id="evidenceBackLink" class="btn btn-secondary">
+      <i class="bi bi-arrow-left"></i> Return to Workspace
+    </a>
+  </div>
+</div>
+
+<!-- Notice banner -->
+<div class="demo-banner">
+  <i class="bi bi-shield-lock-fill"></i>
+  <div>
+    <strong>Editorial Traceability Engine:</strong> Every empirical statement or statistic in this post is matched against approved excerpts from the source document.
+  </div>
+</div>
+
+<!-- Stats Row for Claims -->
+<div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 1.5rem;">
+  <div class="stat-card">
+    <div class="stat-icon success"><i class="bi bi-check-circle-fill"></i></div>
+    <div class="stat-details">
+      <span class="stat-label">Supported Claims</span>
+      <span class="stat-value" id="countSupported">0</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon warning"><i class="bi bi-question-circle-fill"></i></div>
+    <div class="stat-details">
+      <span class="stat-label">Uncertain / Unverified</span>
+      <span class="stat-value" id="countUncertain">0</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon" style="background: var(--danger-bg); color: var(--danger);"><i class="bi bi-x-circle-fill"></i></div>
+    <div class="stat-details">
+      <span class="stat-label">Unsupported Claims</span>
+      <span class="stat-value" id="countUnsupported">0</span>
+    </div>
+  </div>
+</div>
+
+<!-- Claims Table -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Factual Claims Inventory</h3>
+  </div>
+  <div class="table-responsive">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Claim Statement</th>
+          <th>Assessment Status</th>
+          <th>Source Excerpt & Passage ID</th>
+          <th>Reviewer Notes</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="claimsTableBody">
+        <!-- Rendered by evidence.js -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Claim Review Modal Backdrop -->
+<div class="modal-backdrop" id="claimReviewModalBackdrop">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h5 class="modal-title">Review Claim Assessment</h5>
+      <button type="button" class="btn-icon" onclick="closeClaimReviewModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="reviewClaimId">
+
+      <div style="background: var(--bg-body); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.25rem; border: 1px solid var(--border-color);">
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Claim Statement:</div>
+        <div id="reviewClaimText" style="font-weight: 700; color: var(--text-primary); margin-top: 0.25rem;"></div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Passage Ref: <span id="reviewPassageRef"></span></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="reviewStatusSelect">Verification Assessment</label>
+        <select id="reviewStatusSelect" class="form-select">
+          <option value="Supported">Supported (Direct Match in Source)</option>
+          <option value="Uncertain">Uncertain (Paraphrased or ambiguous)</option>
+          <option value="Unsupported">Unsupported (Missing from approved source)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="reviewExcerptText">Supporting Source Excerpt</label>
+        <textarea id="reviewExcerptText" class="form-control" rows="3" placeholder="Exact sentence or paragraph from source document..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="reviewNotesInput">Reviewer Notes</label>
+        <textarea id="reviewNotesInput" class="form-control" rows="2" placeholder="Editorial feedback or justification notes..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="closeClaimReviewModal()">Cancel</button>
+      <button type="button" class="btn btn-primary" onclick="saveClaimReview()">Save Assessment</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/evidence.js"></script>
+{% endblock %}
+

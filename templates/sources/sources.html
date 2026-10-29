@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Source Library — ContentFlow AI{% endblock %}
+{% block page_title %}Source Library{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+  <div>
+    <h1 class="dashboard-title">Source Library</h1>
+    <p class="dashboard-subtitle">Manage approved blogs, whitepapers, case studies, and documentation for omnichannel repurposing.</p>
+  </div>
+  <div>
+    <button type="button" class="btn btn-primary" onclick="openAddSourceModal()">
+      <i class="bi bi-plus-lg"></i> Add Source
+    </button>
+  </div>
+</div>
+
+<!-- Controls Bar: Search, Filter, Sort -->
+<div class="card" style="padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
+  <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+    <div style="display: flex; gap: 0.75rem; flex: 1; min-width: 280px;">
+      <div style="position: relative; flex: 1;">
+        <i class="bi bi-search" style="position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+        <input type="text" id="sourceSearchInput" class="form-control" placeholder="Search by title, passage, or keyword..." style="padding-left: 2.25rem;">
+      </div>
+      <select id="sourceTypeFilter" class="form-select" style="max-width: 180px;">
+        <option value="ALL">All Source Types</option>
+        <option value="Blog Post">Blog Post</option>
+        <option value="Guide">Guide</option>
+        <option value="Case Study">Case Study</option>
+        <option value="Article">Article</option>
+        <option value="Product Launch">Product Launch</option>
+        <option value="Service Guide">Service Guide</option>
+      </select>
+    </div>
+
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+      <select id="sourceSortSelect" class="form-select" style="max-width: 160px;">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="title">Title (A-Z)</option>
+      </select>
+      <span class="badge badge-draft" id="sourcesCountBadge">0 sources</span>
+    </div>
+  </div>
+</div>
+
+<!-- Sources Grid -->
+<div id="sourcesContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+  <!-- Rendered dynamically by sources.js -->
+</div>
+
+<!-- Add / Edit Source Modal -->
+<div class="modal-backdrop" id="sourceModalBackdrop">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h5 class="modal-title" id="sourceModalTitle">Add Source Document</h5>
+      <button type="button" class="btn-icon" onclick="closeSourceModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <form id="sourceModalForm">
+      <div class="modal-body">
+        <input type="hidden" id="sourceIdInput">
+
+        <div class="form-group">
+          <label class="form-label" for="sourceTitleInput">Document Title *</label>
+          <input type="text" id="sourceTitleInput" class="form-control" placeholder="e.g. 2026 Cloud Security Benchmark Guide" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="sourceTypeSelect">Document Type</label>
+            <select id="sourceTypeSelect" class="form-select">
+              <option value="Blog Post">Blog Post</option>
+              <option value="Guide">Guide</option>
+              <option value="Case Study">Case Study</option>
+              <option value="Article">Article</option>
+              <option value="Product Launch">Product Launch</option>
+              <option value="Service Guide">Service Guide</option>
+              <option value="Whitepaper">Whitepaper</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sourceFileInput">Upload (.txt file)</label>
+            <input type="file" id="sourceFileInput" class="form-control" accept=".txt">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="sourceUrlInput">Source Link / URL (Optional)</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="url" id="sourceUrlInput" class="form-control" placeholder="https://company.com/blog/sample-post">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="simulateUrlExtraction()" title="Simulate live extraction">
+              Simulate
+            </button>
+          </div>
+          <div class="form-hint">Note: Live external web crawling is disabled in this local demo.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="sourceContentInput">Document Body / Excerpt Text *</label>
+          <textarea id="sourceContentInput" class="form-control" rows="8" placeholder="Paste full article text, benchmark data points, or executive summary here..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeSourceModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Document</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Source Preview Modal -->
+<div class="modal-backdrop" id="previewModalBackdrop">
+  <div class="modal-card" style="max-width: 720px;">
+    <div class="modal-header">
+      <h5 class="modal-title" id="previewModalTitle">Source Preview</h5>
+      <button type="button" class="btn-icon" onclick="closePreviewModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="modal-body">
+      <div id="previewModalMeta" style="display: flex; gap: 1rem; align-items: center; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.25rem; flex-wrap: wrap;"></div>
+      <div id="previewModalContent" style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary); background: var(--bg-body); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); max-height: 420px; overflow-y: auto;"></div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="closePreviewModal()">Close</button>
+      <a href="#" id="previewModalGenerateLink" class="btn btn-primary">
+        <i class="bi bi-stars"></i> Generate Posts From This Source
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/sources.js"></script>
+{% endblock %}
+

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ContentFlow AI — One Source. Multiple Platforms. Consistent Content.</title>
+  <link rel="icon" type="image/svg+xml" href="/static/images/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <link rel="stylesheet" href="/static/css/main.css">
+  <link rel="stylesheet" href="/static/css/components.css">
+  <link rel="stylesheet" href="/static/css/landing.css">
+  <link rel="stylesheet" href="/static/css/responsive.css">
+</head>
+<body>
+
+  <!-- Landing Nav -->
+  <header class="landing-nav">
+    <div class="landing-nav-brand">
+      <img src="/static/images/logo.svg" alt="ContentFlow AI">
+      <span>ContentFlow AI</span>
+    </div>
+
+    <ul class="landing-nav-links">
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#traceability">Evidence & Trust</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+
+    <div style="display: flex; gap: 0.75rem; align-items: center;">
+      <button type="button" class="btn-icon" id="themeToggleBtn" onclick="App.toggleTheme()" title="Toggle Theme">
+        <i class="bi bi-moon"></i>
+      </button>
+      <a href="{% url 'login' %}" class="btn btn-secondary">Sign In</a>
+      <a href="{% url 'login' %}?action=demo" class="btn btn-primary">Try Demo</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-badge">
+      <i class="bi bi-shield-check"></i> Factual Integrity & Brand Traceability
+    </div>
+    <h1 class="hero-title">
+      Turn One Piece of Content Into an Entire <span>Social Media Campaign.</span>
+    </h1>
+    <p class="hero-desc">
+      Transform approved blogs, case studies, and product pages into platform-ready content while maintaining your brand voice and connecting factual claims to their original sources.
+    </p>
+    <div class="hero-actions">
+      <a href="{% url 'login' %}?action=demo" class="btn btn-primary btn-lg">
+        <i class="bi bi-lightning-charge-fill"></i> Try Demo
+      </a>
+      <a href="#features" class="btn btn-secondary btn-lg">
+        <i class="bi bi-compass"></i> Explore Features
+      </a>
+    </div>
+  </section>
+
+  <!-- Platforms Strip -->
+  <div class="platforms-strip">
+    <div class="platforms-label">Platform-Specific Content Architecture For</div>
+    <div class="platforms-icons">
+      <div class="platform-item"><i class="bi bi-linkedin"></i> LinkedIn</div>
+      <div class="platform-item"><i class="bi bi-instagram"></i> Instagram</div>
+      <div class="platform-item"><i class="bi bi-play-circle-fill"></i> Instagram Reels</div>
+      <div class="platform-item"><i class="bi bi-youtube"></i> YouTube Shorts</div>
+      <div class="platform-item"><i class="bi bi-facebook"></i> Facebook</div>
+    </div>
+  </div>
+
+  <!-- How It Works Section -->
+  <section class="landing-section" id="how-it-works">
+    <div class="section-header">
+      <span class="section-tag">Workflow</span>
+      <h2 class="section-title">How ContentFlow AI Works</h2>
+      <p class="section-subtitle">A controlled, verified pipeline that turns technical knowledge into authoritative social distribution.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-box">
+        <div class="feature-icon-wrapper"><i class="bi bi-file-earmark-text"></i></div>
+        <h3 class="feature-title">1. Connect Source Document</h3>
+        <p class="feature-desc">Import verified whitepapers, engineering guides, or case studies into your centralized source library.</p>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon-wrapper"><i class="bi bi-cpu"></i></div>
+        <h3 class="feature-title">2. Platform-Specific Repurposing</h3>
+        <p class="feature-desc">Select target networks, audience tone, and custom brand guidelines to generate tailored carousels, hooks, and posts.</p>
+      </div>
+
+      <div class="feature-box">
+        <div class="feature-icon-wrapper"><i class="bi bi-patch-check"></i></div>
+        <h3 class="feature-title">3. Trace Claims & Export</h3>
+        <p class="feature-desc">Verify every numerical claim against original source excerpts before review approval and multichannel export.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="landing-section" id="features" style="background-color: var(--bg-surface); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); max-width: 100%;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      <div class="section-header">
+        <span class="section-tag">Core Features</span>
+        <h2 class="section-title">Engineered for Editorial Rigor</h2>
+        <p class="section-subtitle">No hallucinations, no generic boilerplate. Professional controls for marketing and comms teams.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-box">
+          <div class="feature-icon-wrapper"><i class="bi bi-link-45deg"></i></div>
+          <h3 class="feature-title">Source-to-Claim Evidence</h3>
+          <p class="feature-desc">Every generated post links back to specific sentences in your approved documentation with evidence statuses.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrapper"><i class="bi bi-palette"></i></div>
+          <h3 class="feature-title">Persistent Brand Profiles</h3>
+          <p class="feature-desc">Enforce prohibited terms, target tone, custom CTAs, and formatting rules across every variation.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="feature-icon-wrapper"><i class="bi bi-clock-history"></i></div>
+          <h3 class="feature-title">Version History & Revisions</h3>
+          <p class="feature-desc">Iterate with confidence. Compare previous iterations, track reviewer status changes, and record override logs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Source Traceability Showcase -->
+  <section class="landing-section" id="traceability">
+    <div class="section-header">
+      <span class="section-tag">Fact-Checking Demo</span>
+      <h2 class="section-title">Say Goodbye to AI Hallucinations</h2>
+      <p class="section-subtitle">Inspect how ContentFlow AI verifies claims before marketing content ever gets published.</p>
+    </div>
+
+    <div class="card" style="padding: 2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+        <div>
+          <span class="badge badge-supported"><i class="bi bi-check-circle-fill"></i> Supported Claim</span>
+          <h4 style="margin-top: 0.5rem; font-size: 1.1rem;">"Reduced lateral attack movement by 74%"</h4>
+        </div>
+        <span class="badge badge-platform">LinkedIn Post #post-201</span>
+      </div>
+      <div style="background: var(--bg-body); padding: 1.25rem; border-radius: var(--radius-md); border-left: 4px solid var(--success);">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.35rem;">Supporting Source Document Excerpt (Passage P-101-2):</div>
+        <p style="font-style: italic; color: var(--text-secondary); margin: 0;">"...In our benchmark study of 120 enterprises, organizations implementing Zero Trust reduced lateral attack movement by 74% and lowered incident containment time from 21 days to under 4 hours."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="landing-section" id="faq">
+    <div class="section-header">
+      <span class="section-tag">Frequently Asked Questions</span>
+      <h2 class="section-title">Got Questions?</h2>
+    </div>
+
+    <div style="max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem;">
+      <div class="card">
+        <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem;">Does this demo require an external API key or paid subscription?</h4>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">No. This interactive demo operates completely inside your web browser using simulated generation logic and localStorage persistence. No API key, credit card, or external backend is needed.</p>
+      </div>
+      <div class="card">
+        <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem;">Can I add my own articles and test real generation?</h4>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">Yes! You can paste in your own text or import `.txt` files in the Source Library, and generate customized social posts tailored to each platform.</p>
+      </div>
+      <div class="card">
+        <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem;">How does ContentFlow AI export approved posts?</h4>
+        <p style="color: var(--text-secondary); font-size: 0.95rem;">You can export approved posts or draft queues directly to CSV or JSON format using browser Blob APIs, complete with formula injection protection.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h4>ContentFlow AI</h4>
+        <p style="font-size: 0.9rem; line-height: 1.5;">One Source. Multiple Platforms. Consistent Content. The interactive content repurposing platform for brand integrity.</p>
+      </div>
+      <div>
+        <h5 style="color: #fff; margin-bottom: 0.75rem;">Navigation</h5>
+        <p style="margin-bottom: 0.35rem;"><a href="{% url 'dashboard' %}" style="color: #94a3b8;">Dashboard</a></p>
+        <p style="margin-bottom: 0.35rem;"><a href="{% url 'sources' %}" style="color: #94a3b8;">Source Library</a></p>
+        <p style="margin-bottom: 0.35rem;"><a href="{% url 'create_content' %}" style="color: #94a3b8;">Create Content</a></p>
+      </div>
+      <div>
+        <h5 style="color: #fff; margin-bottom: 0.75rem;">Interactive Demo</h5>
+        <p style="font-size: 0.85rem; color: #94a3b8;">Demo Email: demo@contentflow.ai</p>
+        <p style="font-size: 0.85rem; color: #94a3b8;">Demo Password: Demo@123</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 ContentFlow AI. Local demonstration portfolio build.</span>
+      <span class="badge badge-draft">Simulated AI / LocalStorage Mode</span>
+    </div>
+  </footer>
+
+  <script src="/static/js/demo-data.js"></script>
+  <script src="/static/js/storage.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
+

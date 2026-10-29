@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Content Workspace — ContentFlow AI{% endblock %}
+{% block page_title %}Content Workspace{% endblock %}
+
+{% block content %}
+<input type="hidden" id="workspaceContentId" value="{{ content_id }}">
+
+<div class="dashboard-header">
+  <div>
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem;">
+      <span id="postStatusBadge" class="badge">Draft</span>
+      <span id="postPlatformBadge" class="badge badge-platform">Platform</span>
+      <span style="font-size: 0.8rem; color: var(--text-muted);">Created: <span id="postCreatedDate">N/A</span></span>
+    </div>
+    <h1 class="dashboard-title" id="postTitleHeading">Post Editor</h1>
+    <p class="dashboard-subtitle">
+      Repurposed from: <a href="#" id="postSourceLink" style="font-weight: 600;">Source Document</a>
+    </p>
+  </div>
+
+  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+    <button type="button" id="savePostBtn" class="btn btn-primary">
+      <i class="bi bi-floppy"></i> Save Changes
+    </button>
+    <button type="button" id="approvePostBtn" class="btn btn-success">
+      <i class="bi bi-check-circle"></i> Approve Post
+    </button>
+    <button type="button" id="rejectPostBtn" class="btn btn-secondary" style="color: var(--danger);">
+      <i class="bi bi-x-circle"></i> Reject
+    </button>
+    <button type="button" id="exportPostBtn" class="btn btn-secondary">
+      <i class="bi bi-download"></i> Export JSON
+    </button>
+  </div>
+</div>
+
+<!-- Critical Warning Banner for Claims -->
+<div id="workspaceClaimWarning" class="demo-banner" style="display: none; background: var(--warning-bg); border-color: #fde68a; color: #92400e;">
+  <i class="bi bi-exclamation-triangle-fill" style="font-size: 1.25rem;"></i>
+  <div style="flex-grow: 1;">
+    <strong>Verification Flag:</strong> This post contains unverified or uncertain claims. Approval requires a documented editorial override reason.
+  </div>
+  <a href="evidence/" class="btn btn-secondary btn-sm" style="background: #ffffff; border-color: #d97706; color: #92400e;">
+    Inspect Evidence
+  </a>
+</div>
+
+<!-- Main Layout: 2 Columns (Editor vs Claims & Version History) -->
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; align-items: start;">
+  <!-- Left Column: Form Fields & Content -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">Editorial Content</h3>
+      <div style="display: flex; gap: 0.5rem;">
+        <button type="button" id="regeneratePostBtn" class="btn btn-secondary btn-sm" title="Generate another variation">
+          <i class="bi bi-arrow-repeat"></i> Regenerate
+        </button>
+        <button type="button" id="duplicatePostBtn" class="btn btn-secondary btn-sm" title="Duplicate post">
+          <i class="bi bi-files"></i> Duplicate
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="postTitleInput">Post Title / Internal Headline</label>
+      <input type="text" id="postTitleInput" class="form-control" placeholder="Enter headline">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="postContentInput">Social Copy / Script Content</label>
+      <textarea id="postContentInput" class="form-control" rows="12" style="font-family: inherit; line-height: 1.6;" placeholder="Post content..."></textarea>
+      <div class="form-hint">Tip: Use blank lines between sentences for clean mobile formatting on LinkedIn and Instagram.</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="postCtaInput">Call to Action (CTA)</label>
+      <input type="text" id="postCtaInput" class="form-control" placeholder="e.g. Read the complete guide linked below.">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="postHashtagsInput">Hashtags</label>
+      <input type="text" id="postHashtagsInput" class="form-control" placeholder="#Tech #Innovation #Leadership">
+    </div>
+  </div>
+
+  <!-- Right Column: Evidence & Version History -->
+  <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+    <!-- Evidence Summary Card -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><i class="bi bi-patch-check" style="color: var(--primary); margin-right: 0.5rem;"></i>Source Evidence</h3>
+        <span class="badge badge-draft" id="claimsCountSummary">0 claims</span>
+      </div>
+      <div id="workspaceClaimsList">
+        <!-- Rendered by workspace.js -->
+      </div>
+      <a href="evidence/" class="btn btn-outline-primary btn-sm" style="width: 100%; margin-top: 0.75rem;">
+        <i class="bi bi-shield-check"></i> Open Full Fact-Check Console
+      </a>
+    </div>
+
+    <!-- Version History Card -->
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"><i class="bi bi-clock-history" style="color: var(--secondary); margin-right: 0.5rem;"></i>Version History</h3>
+      </div>
+      <div id="versionsContainer">
+        <!-- Rendered by workspace.js -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Demo Override Modal Backdrop -->
+<div class="modal-backdrop" id="overrideModalBackdrop">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h5 class="modal-title">Editorial Override Justification Required</h5>
+      <button type="button" class="btn-icon" onclick="closeOverrideModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <form id="overrideForm">
+      <div class="modal-body">
+        <input type="hidden" id="overrideTargetStatus">
+        <div class="demo-banner" style="background: var(--warning-bg); border-color: #fde68a; color: #92400e;">
+          <i class="bi bi-shield-exclamation"></i>
+          <div>This post has unresolved or uncertain factual claims. In accordance with editorial governance rules, an explicit justification is recorded in the local audit log.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="overrideReasonInput">Approval Reason / Reviewer Justification *</label>
+          <textarea id="overrideReasonInput" class="form-control" rows="4" placeholder="e.g. Verified with primary author offline; number represents Q3 consolidated audit." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeOverrideModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Confirm & Log Override</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/workspace.js"></script>
+{% endblock %}
+
